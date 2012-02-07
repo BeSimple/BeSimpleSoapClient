@@ -71,6 +71,7 @@ class Curl
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_HEADER => true,
             CURLOPT_USERAGENT => $options['user_agent'],
+            CURLOPT_COOKIEJAR => true,
             CURLINFO_HEADER_OUT => true,
        );
         curl_setopt_array($this->ch, $curlOptions);
