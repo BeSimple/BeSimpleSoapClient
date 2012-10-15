@@ -312,7 +312,7 @@ class SoapClient extends \SoapClient
     private function loadWsdl($wsdl, array $options)
     {
         // option to resolve wsdl/xsd includes
-        $resolveRemoteIncludes = true;
+        $resolveRemoteIncludes = false;
         if (isset($options['resolve_wsdl_remote_includes'])) {
             $resolveRemoteIncludes = $options['resolve_wsdl_remote_includes'];
         }
