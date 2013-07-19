@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace BeSimple\SoapClient;
+namespace BeSimple\SoapClient\Tests;
 
 use BeSimple\SoapClient\Curl;
 
@@ -23,7 +23,9 @@ class CurlTest extends \PHPUnit_Framework_TestCase
 
     protected function startPhpWebserver()
     {
-            $dir = __DIR__.DIRECTORY_SEPARATOR.'Fixtures';
+        $this->markTestSkipped('Start a local webserver is not the best practice');
+
+        $dir = __DIR__.DIRECTORY_SEPARATOR.'Fixtures';
         if ('Windows' == substr(php_uname('s'), 0, 7)) {
             $powershellCommand = "\$app = start-process php.exe -ArgumentList '-S localhost:8000 -t ".$dir."' -WindowStyle 'Hidden' -passthru; Echo \$app.Id;";
             $shellCommand = 'powershell -command "& {'.$powershellCommand.'}"';
