@@ -88,7 +88,7 @@ class Curl
             curl_setopt($this->ch, CURLOPT_PROXYUSERPWD, $options['proxy_user'] . ':' . $options['proxy_password']);
         }
         if (isset($options['login'])) {
-            curl_setopt($this->ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+            curl_setopt($this->ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($this->ch, CURLOPT_USERPWD, $options['login'].':'.$options['password']);
         }
         if (isset($options['local_cert'])) {
