@@ -113,6 +113,10 @@ class Curl
         if (isset($options['ca_path'])) {
             curl_setopt($this->ch, CURLOPT_CAPATH, $options['ca_path']);
         }
+        if (isset($options['ssl_key'])) {
+            curl_setopt($this->ch, CURLOPT_SSLKEY, $options['ssl_key']);
+            curl_setopt($this->ch, CURLOPT_SSLKEYPASSWD, $options['ssl_keypasswd']);
+        }
     }
 
     /**

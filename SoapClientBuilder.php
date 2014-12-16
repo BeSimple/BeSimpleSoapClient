@@ -239,6 +239,32 @@ class SoapClientBuilder extends AbstractSoapBuilder
     }
 
     /**
+     * @param string $key
+     * @param string $password
+     *
+     * @return \BeSimple\SoapClient\SoapClientBuilder
+     */
+    public function withSslKey($key, $password = '')
+    {
+        $this->soapOptions['ssl_key'] = $key;
+        $this->soapOptions['ssl_keypasswd'] = $password;
+
+        return $this;
+    }
+
+    /**
+     * @param string $caInfo
+     *
+     * @return \BeSimple\SoapClient\SoapClientBuilder
+     */
+    public function withCaInfo($caInfo)
+    {
+        $this->soapOptions['ca_info'] = $caInfo;
+
+        return $this;
+    }
+
+    /**
      * Validate options.
      */
     protected function validateOptions()
