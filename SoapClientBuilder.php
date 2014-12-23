@@ -139,7 +139,7 @@ class SoapClientBuilder extends AbstractSoapBuilder
      */
     public function withBasicAuthentication($username, $password)
     {
-        $this->soapOptionAuthentication = array(
+        $this->soapOptionAuthentication += array(
             'authentication' => SOAP_AUTHENTICATION_BASIC,
             'login'          => $username,
             'password'       => $password,
@@ -158,7 +158,7 @@ class SoapClientBuilder extends AbstractSoapBuilder
      */
     public function withDigestAuthentication($certificate, $passphrase = null)
     {
-        $this->soapOptionAuthentication = array(
+        $this->soapOptionAuthentication += array(
             'authentication' => SOAP_AUTHENTICATION_DIGEST,
             'local_cert'     => $certificate,
         );
