@@ -161,11 +161,8 @@ class SoapClientBuilder extends AbstractSoapBuilder
         $this->soapOptionAuthentication += array(
             'authentication' => SOAP_AUTHENTICATION_DIGEST,
             'local_cert'     => $certificate,
+            'passphrase'     => $passphrase
         );
-
-        if ($passphrase) {
-            $this->soapOptionAuthentication['passphrase'] = $passphrase;
-        }
 
         return $this;
     }
