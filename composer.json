@@ -1,9 +1,9 @@
 {
-    "name": "besimple/soap-client",
+    "name": "fantyk/soap-client",
     "type": "library",
     "description": "Build and consume SOAP Client based web services",
     "keywords": [ "soap", "soap-client" ],
-    "homepage": "https://github.com/BeSimple/BeSimpleSoapClient",
+    "homepage": "https://github.com/Fantyk/BeSimpleSoapClient",
     "license": "MIT",
     "authors": [
         {
@@ -23,7 +23,7 @@
         "php": ">=5.3.0",
         "ext-soap": "*",
         "ext-curl": "*",
-        "besimple/soap-common": "0.3.*",
+        "besimple/soap-common": "0.2.*@dev",
         "ass/xmlsecurity": "~1.0"
     },
     "require-dev": {
