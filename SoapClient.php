@@ -385,7 +385,7 @@ class SoapClient extends \SoapClient
     protected function validateWsdlFile($wsdl)
     {
         $wsdlFileContent = file_get_contents($wsdl);
-        if (!preg_match('/.wsdl$/', $wsdlFileContent)) {
+        if (!preg_match('/wsdl/', $wsdlFileContent)) {
             throw new \RuntimeException('Please enter a path to a valid .wsdl file');
         }
     }
