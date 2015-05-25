@@ -121,6 +121,23 @@ class SoapClientBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->mergeOptions(array('soap_version' => SOAP_1_2, 'encoding' => 'UTF-8', 'features' => SOAP_SINGLE_ELEMENT_ARRAYS, 'user_agent' => 'BeSimpleSoap')), $builder->getSoapOptions());
     }
 
+    public function testWithSslKey()
+    {
+        $builder = $this->getSoapBuilder();
+
+        $builder->withSslKey(__DIR__.'/Fixtures/cert.pem', 'psw');
+        $this->assertEquals($this->mergeOptions(array('ssl_key' => __DIR__.'/Fixtures/cert.pem', 'ssl_keypasswd' => 'psw')), $builder->getSoapOptions());
+    }
+
+    public function testWithCaInfo()
+    {
+        $builder = $this->getSoapBuilder();
+
+        $builder->withCaInfo(__DIR__.'/Fixtures/cert.pem');
+        $this->assertEquals($this->mergeOptions(array('ca_info' => __DIR__.'/Fixtures/cert.pem')), $builder->getSoapOptions());
+    }
+
+
     private function getSoapBuilder()
     {
         return new SoapClientBuilder();

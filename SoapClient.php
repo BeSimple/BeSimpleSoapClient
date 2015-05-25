@@ -107,6 +107,7 @@ class SoapClient extends \SoapClient
         }
 
         $wsdlFile = $this->loadWsdl($wsdl, $options);
+        $this->validateWsdlFile($wsdlFile);
         // TODO $wsdlHandler = new WsdlHandler($wsdlFile, $this->soapVersion);
         $this->soapKernel = new SoapKernel();
         // set up type converter and mime filter
@@ -315,7 +316,7 @@ class SoapClient extends \SoapClient
     *
     * @return void
     */
-    private function configureMime(array &$options)
+    protected function configureMime(array &$options)
     {
         if (isset($options['attachment_type']) && Helper::ATTACHMENTS_TYPE_BASE64 !== $options['attachment_type']) {
             // register mime filter in SoapKernel
@@ -379,5 +380,13 @@ class SoapClient extends \SoapClient
         }
 
         return $cacheFileName;
+    }
+
+    protected function validateWsdlFile($wsdl)
+    {
+        $wsdlFileContent = file_get_contents($wsdl);
+        if (!preg_match('/wsdl/', $wsdlFileContent)) {
+            throw new \RuntimeException('Please enter a path to a valid .wsdl file');
+        }
     }
 }
