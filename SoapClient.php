@@ -374,7 +374,7 @@ class SoapClient extends \SoapClient
         $wsdlDownloader = new WsdlDownloader($this->curl, $resolveRemoteIncludes, $wsdlCache);
         try {
             $cacheFileName = $wsdlDownloader->download($wsdl);
-        } catch (\RuntimeException $e) {
+        } catch (\ErrorException $e) {
             throw new \SoapFault('WSDL', "SOAP-ERROR: Parsing WSDL: Couldn't load from '" . $wsdl . "' : failed to load external entity \"" . $wsdl . "\"");
         }
 
