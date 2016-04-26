@@ -78,6 +78,18 @@ class SoapClientBuilder extends AbstractSoapBuilder
     }
 
     /**
+     * @return $this
+     */
+    public function withStreamCryptoMethodTLSv1_2()
+    {
+        $this->soapOptions['stream_context'] = stream_context_create(
+            ['ssl' => ['crypto_method' => STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT]]
+        );
+
+        return $this;
+    }
+
+    /**
      * Configure option 'exceptions'.
      *
      * @param boolean $exceptions Enable/Disable
