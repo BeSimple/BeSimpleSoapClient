@@ -72,10 +72,12 @@ class Curl
             CURLOPT_HEADER => true,
             CURLOPT_USERAGENT => $options['user_agent'],
             CURLINFO_HEADER_OUT => true,
-            CURLOPT_TCP_KEEPALIVE => 1,
-            CURLOPT_TCP_KEEPIDLE => 180,
-            CURLOPT_TCP_KEEPINTVL => 60,
         );
+        if (defined('CURLOPT_TCP_KEEPALIVE')) {
+            $curlOptions[CURLOPT_TCP_KEEPALIVE] = 1;
+            $curlOptions[CURLOPT_TCP_KEEPIDLE] = 180;
+            $curlOptions[CURLOPT_TCP_KEEPINTVL] = 60;
+        }
         curl_setopt_array($this->ch, $curlOptions);
         if (isset($options['compression']) && !($options['compression'] & SOAP_COMPRESSION_ACCEPT)) {
             curl_setopt($this->ch, CURLOPT_ENCODING, 'identity');
