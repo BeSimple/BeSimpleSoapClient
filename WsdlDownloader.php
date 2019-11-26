@@ -63,12 +63,15 @@ class WsdlDownloader
     /**
      * Constructor.
      *
-     * @param HttpClient                $httpClient            Http client instance
+     * @param HttpClientInterface       $httpClient            Http client instance
      * @param boolean                   $resolveRemoteIncludes WSDL/XSD include enabled?
      * @param boolean                   $cacheWsdl             Cache constant
      */
-    public function __construct(HttpClient $httpClient, $resolveRemoteIncludes = true, $cacheWsdl = Cache::TYPE_DISK)
-    {
+    public function __construct(
+        HttpClientInterface $httpClient,
+        $resolveRemoteIncludes = true,
+        $cacheWsdl = Cache::TYPE_DISK
+    ) {
         $this->httpClient            = $httpClient;
         $this->resolveRemoteIncludes = (Boolean) $resolveRemoteIncludes;
 
