@@ -31,6 +31,21 @@ class SoapClientBuilder extends AbstractSoapBuilder
     protected $soapOptionAuthentication = array();
 
     /**
+     * @var HttpClientFactory
+     */
+    protected $httpClientFactory;
+
+    /**
+     * @param HttpClientFactory $httpClientFactory
+     */
+    public function __construct(HttpClientFactory $httpClientFactory)
+    {
+        parent::__construct();
+
+        $this->httpClientFactory = $httpClientFactory;
+    }
+
+    /**
      * Create new instance with default options.
      *
      * @return \BeSimple\SoapClient\SoapClientBuilder
@@ -50,7 +65,7 @@ class SoapClientBuilder extends AbstractSoapBuilder
     {
         $this->validateOptions();
 
-        return new SoapClient($this->wsdl, $this->getSoapOptions());
+        return new SoapClient($this->getHttpClient(), $this->wsdl, $this->getSoapOptions());
     }
 
     /**
@@ -61,6 +76,26 @@ class SoapClientBuilder extends AbstractSoapBuilder
     public function getSoapOptions()
     {
         return parent::getSoapOptions() + $this->soapOptionAuthentication;
+    }
+
+    /**
+     * @return HttpClientInterface
+     */
+    public function getHttpClient()
+    {
+        return $this->httpClientFactory->getHttpClient($this->soapOptions['http_client'], $this->getSoapOptions());
+    }
+
+    /**
+     * @param string $client
+     *
+     * @return $this
+     */
+    public function withHttpClient($client)
+    {
+        $this->soapOptions['http_client'] = $client;
+
+        return $this;
     }
 
     /**
