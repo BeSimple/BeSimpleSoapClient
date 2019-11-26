@@ -19,12 +19,19 @@
             "email": "mail@andreass.net"
         }
     ],
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:Credit-Jeeves/HttpClient.git"
+        }
+    ],
     "require": {
         "php": ">=5.3.0",
         "ext-soap": "*",
         "ext-curl": "*",
         "besimple/soap-common": "~0.2",
-        "ass/xmlsecurity": "~1.0"
+        "ass/xmlsecurity": "~1.0",
+        "renttrack/http-client": "dev-master"
     },
     "require-dev": {
         "mikey179/vfsStream": "~1.0",
