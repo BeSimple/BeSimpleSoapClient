@@ -42,11 +42,11 @@ class SoapClient extends \SoapClient
     protected $tracingEnabled = false;
 
     /**
-     * cURL instance.
+     * Http client instance.
      *
-     * @var \BeSimple\SoapClient\Curl
+     * @var HttpClientInterface
      */
-    protected $curl = null;
+    protected $httpClient = null;
 
     /**
      * Last request headers.
@@ -86,10 +86,11 @@ class SoapClient extends \SoapClient
     /**
      * Constructor.
      *
-     * @param string               $wsdl    WSDL file
-     * @param array(string=>mixed) $options Options array
+     * @param HttpClientInterface  $httpClient Http client instance
+     * @param string               $wsdl       WSDL file
+     * @param array(string=>mixed) $options    Options array
      */
-    public function __construct($wsdl, array $options = array())
+    public function __construct(HttpClientInterface $httpClient, $wsdl, array $options = array())
     {
         // tracing enabled: store last request/response header and body
         if (isset($options['trace']) && $options['trace'] === true) {
@@ -100,7 +101,7 @@ class SoapClient extends \SoapClient
             $this->soapVersion = $options['soap_version'];
         }
 
-        $this->curl = new Curl($options);
+        $this->httpClient = $httpClient;
 
         if (isset($options['extra_options'])) {
             unset($options['extra_options']);
@@ -134,14 +135,14 @@ class SoapClient extends \SoapClient
         $soapVersion = $soapRequest->getVersion();
         $soapAction = $soapRequest->getAction();
         if (SOAP_1_1 == $soapVersion) {
-            $headers = array(
-                'Content-Type:' . $soapRequest->getContentType(),
-                'SOAPAction: "' . $soapAction . '"',
-            );
+            $headers = [
+                'Content-Type' => $soapRequest->getContentType(),
+                'SOAPAction' => '"' . $soapAction . '"',
+            ];
         } else {
-            $headers = array(
-               'Content-Type:' . $soapRequest->getContentType() . '; action="' . $soapAction . '"',
-            );
+            $headers = [
+                'Content-Type' => $soapRequest->getContentType() . '; action="' . $soapAction . '"',
+            ];
         }
 
         $location = $soapRequest->getLocation();
@@ -152,7 +153,7 @@ class SoapClient extends \SoapClient
         $options = $this->filterRequestOptions($soapRequest);
 
         // execute HTTP request with cURL
-        $responseSuccessfull = $this->curl->exec(
+        $responseSuccessfull = $this->httpClient->exec(
             $location,
             $content,
             $headers,
@@ -161,27 +162,27 @@ class SoapClient extends \SoapClient
 
         // tracing enabled: store last request header and body
         if ($this->tracingEnabled === true) {
-            $this->lastRequestHeaders = $this->curl->getRequestHeaders();
+            $this->lastRequestHeaders = $this->httpClient->getRequestHeaders();
             $this->lastRequest = $soapRequest->getContent();
         }
         // in case of an error while making the http request throw a soapFault
         if ($responseSuccessfull === false) {
             // get error message from curl
-            $faultstring = $this->curl->getErrorMessage();
+            $faultstring = $this->httpClient->getErrorMessage();
             throw new \SoapFault('HTTP', $faultstring);
         }
         // tracing enabled: store last response header and body
         if ($this->tracingEnabled === true) {
-            $this->lastResponseHeaders = $this->curl->getResponseHeaders();
-            $this->lastResponse = $this->curl->getResponseBody();
+            $this->lastResponseHeaders = $this->httpClient->getResponseHeaders();
+            $this->lastResponse = $this->httpClient->getResponseBody();
         }
         // wrap response data in SoapResponse object
         $soapResponse = SoapResponse::create(
-            $this->curl->getResponseBody(),
+            $this->httpClient->getResponseBody(),
             $soapRequest->getLocation(),
             $soapRequest->getAction(),
             $soapRequest->getVersion(),
-            $this->curl->getResponseContentType()
+            $this->httpClient->getResponseContentType()
         );
 
         return $soapResponse;
@@ -371,7 +372,7 @@ class SoapClient extends \SoapClient
         if (isset($options['cache_wsdl'])) {
             $wsdlCache = $options['cache_wsdl'];
         }
-        $wsdlDownloader = new WsdlDownloader($this->curl, $resolveRemoteIncludes, $wsdlCache);
+        $wsdlDownloader = new WsdlDownloader($this->httpClient, $resolveRemoteIncludes, $wsdlCache);
         try {
             $cacheFileName = $wsdlDownloader->download($wsdl);
         } catch (\RuntimeException $e) {

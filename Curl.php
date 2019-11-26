@@ -17,7 +17,7 @@ namespace BeSimple\SoapClient;
  *
  * @author Andreas Schamberger <mail@andreass.net>
  */
-class Curl
+class Curl implements HttpClientInterface
 {
     /**
      * HTTP User Agent.

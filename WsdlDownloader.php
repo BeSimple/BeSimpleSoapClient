@@ -47,11 +47,11 @@ class WsdlDownloader
     protected $cacheTtl;
 
     /**
-     * cURL instance for downloads.
+     * Http client instance for downloads.
      *
-     * @var unknown_type
+     * @var HttpClientInterface
      */
-    protected $curl;
+    protected $httpClient;
 
     /**
      * Resolve WSDl/XSD includes.
@@ -63,13 +63,13 @@ class WsdlDownloader
     /**
      * Constructor.
      *
-     * @param \BeSimple\SoapClient\Curl $curl                  Curl instance
+     * @param HttpClient                $httpClient            Http client instance
      * @param boolean                   $resolveRemoteIncludes WSDL/XSD include enabled?
      * @param boolean                   $cacheWsdl             Cache constant
      */
-    public function __construct(Curl $curl, $resolveRemoteIncludes = true, $cacheWsdl = Cache::TYPE_DISK)
+    public function __construct(HttpClient $httpClient, $resolveRemoteIncludes = true, $cacheWsdl = Cache::TYPE_DISK)
     {
-        $this->curl                  = $curl;
+        $this->httpClient            = $httpClient;
         $this->resolveRemoteIncludes = (Boolean) $resolveRemoteIncludes;
 
         // get current WSDL caching config
@@ -96,10 +96,10 @@ class WsdlDownloader
             if (!$this->cacheEnabled || !file_exists($cacheFilePath) || (filemtime($cacheFilePath) + $this->cacheTtl) < time()) {
                 if ($isRemoteFile) {
                     // execute request
-                    $responseSuccessfull = $this->curl->exec($wsdl);
+                    $responseSuccessfull = $this->httpClient->exec($wsdl);
                     // get content
                     if ($responseSuccessfull) {
-                        $response = $this->curl->getResponseBody();
+                        $response = $this->httpClient->getResponseBody();
 
                         if ($this->resolveRemoteIncludes) {
                             $this->resolveRemoteIncludes($response, $cacheFilePath, $wsdl);
