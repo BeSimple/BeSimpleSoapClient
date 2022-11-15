@@ -195,11 +195,11 @@ class SoapClient extends \SoapClient
      * @param string $location Location
      * @param string $action   SOAP action
      * @param int    $version  SOAP version
-     * @param int    $oneWay   0|1
+     * @param bool|int    $oneWay   0|1
      *
      * @return string
      */
-    public function __doRequest($request, $location, $action, $version, $oneWay = 0)
+    public function __doRequest($request, $location, $action, $version, #[LanguageLevelTypeAware(["8.0" => 'bool'], default: 'int')] $oneWay = false): ?string
     {
         // wrap request data in SoapRequest object
         $soapRequest = SoapRequest::create($request, $location, $action, $version);
@@ -263,7 +263,7 @@ class SoapClient extends \SoapClient
      *
      * @return string
      */
-    public function __getLastRequestHeaders()
+    public function __getLastRequestHeaders(): ?string
     {
         return $this->lastRequestHeaders;
     }
@@ -273,7 +273,7 @@ class SoapClient extends \SoapClient
      *
      * @return string
      */
-    public function __getLastRequest()
+    public function __getLastRequest(): ?string
     {
         return $this->lastRequest;
     }
@@ -283,7 +283,7 @@ class SoapClient extends \SoapClient
      *
      * @return string
      */
-    public function __getLastResponseHeaders()
+    public function __getLastResponseHeaders(): ?string
     {
         return $this->lastResponseHeaders;
     }
@@ -293,7 +293,7 @@ class SoapClient extends \SoapClient
      *
      * @return string
      */
-    public function __getLastResponse()
+    public function __getLastResponse(): ?string
     {
         return $this->lastResponse;
     }
